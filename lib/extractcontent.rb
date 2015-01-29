@@ -22,6 +22,7 @@ require "kconv"
 module ExtractContent
   # Default option parameters.
   @default = {
+    :content_max => 300,                                              # 本文最大文字数
     :threshold => 100,                                                # 本文と見なすスコアの閾値
     :min_length => 80,                                                # 評価を行うブロック長の最小値
     :decay_factor => 0.73,                                            # 減衰係数(小さいほど先頭に近いブロックのスコアが高くなる)
@@ -60,7 +61,7 @@ module ExtractContent
     # option parameters
     opt = if opt then @default.merge(opt) else @default end
     b = binding   # local_variable_set があれば……
-    threshold=min_length=decay_factor=continuous_factor=punctuation_weight=punctuations=waste_expressions=dom_separator=debug=nil
+    content_max=threshold=min_length=decay_factor=continuous_factor=punctuation_weight=punctuations=waste_expressions=dom_separator=debug=nil
     opt.each do |key, value|
       eval("#{key.id2name} = opt[:#{key.id2name}]", b) 
     end
@@ -125,7 +126,8 @@ module ExtractContent
     end
     bodylist << [body, score]
     body = bodylist.inject{|a,b| if a[1]>=b[1] then a else b end }
-    [strip_tags(body[0], dom_separator), title]
+    body = strip_tags(body[0], dom_separator)[0..content_max]
+    [body,title]
   end
 
   # Extracts title.
@@ -206,5 +208,3 @@ module ExtractContent
   end
 
 end
-
-
