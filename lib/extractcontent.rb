@@ -17,6 +17,7 @@
 # - Google AdSense Section Target ブロックには本文が記述されているとし、特に抽出
 
 require 'cgi'
+require "kconv"
 
 module ExtractContent
   # Default option parameters.
@@ -52,6 +53,7 @@ module ExtractContent
 
   # Analyses the given HTML text, extracts body and title.
   def self.analyse(html, opt=nil)
+    html = html.toutf8
     # frameset or redirect
     return ["", extract_title(html)] if html =~ /<\/frameset>|<meta\s+http-equiv\s*=\s*["']?refresh['"]?[^>]*url/i
 
@@ -204,4 +206,5 @@ module ExtractContent
   end
 
 end
+
 

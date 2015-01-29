@@ -12,6 +12,7 @@ Add a following line to Gemfile.
 
 ```ruby
 gem 'extractcontent', github: 'mono0x/extractcontent'
+gem 'extractcontent', github: 'GeppettoAndRomero/extractcontent'
 ```
 
 Install the gem.
